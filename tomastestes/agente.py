@@ -1,16 +1,43 @@
 from abc import ABC, abstractmethod
 import json
+import threading
 
 from Modelos import Observacao, Accao
 
-class Agente(ABC):
+class Agente(ABC, threading.Thread):
     """Interface base para todos os agentes."""
     def __init__(self, nome: str):
+        threading.Thread.__init__(self)
         self.nome = nome
         self.recompensa_total = 0.0
         self.passos = 0
         self.sensores = []
         self.ultima_observacao = None # Guarda sempre a última observação
+        self.running = False
+        self.ambiente = None # Referência para o ambiente
+        self.start_step_event = threading.Event()
+        self.end_step_event = threading.Event()
+
+    def set_ambiente(self, ambiente):
+        self.ambiente = ambiente
+
+    def run(self):
+        self.running = True
+        while self.running:
+            # Wait for "Start Step" signal
+            self.start_step_event.wait()
+            if not self.running: break
+            self.start_step_event.clear()
+
+            # Cycle: Observe -> Act
+            if self.ambiente:
+                observacao = self.ambiente.observacaoPara(self)
+                self.observacao(observacao)
+                accao = self.age()
+                self.ambiente.agir(accao, self)
+            
+            # Signal that we are done with this step
+            self.end_step_event.set()
 
     @abstractmethod
     def observacao(self, obs: 'Observacao'):

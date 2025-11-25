@@ -1,6 +1,7 @@
 import sys
 import os
 import json
+import threading
 
 # Add current directory to path to allow imports from local files
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -14,6 +15,7 @@ from Sensor import Sensor
 # Mock classes for testing since Ambiente is abstract and Motor expects specific implementations
 class AmbienteMock(Ambiente):
     def __init__(self):
+        super().__init__()
         self.passos = 0
     
     def observacaoPara(self, agente):
@@ -27,8 +29,8 @@ class AmbienteMock(Ambiente):
         self.passos += 1
         print(f"Ambiente atualizado. Passo: {self.passos}")
 
-    def agir(self, accao, agente):
-        print(f"Agente {agente.nome} realizou acao: {accao}")
+    def _agir_safe(self, accao, agente):
+        print(f"Agente {agente.nome} (Thread {threading.get_ident()}) realizou acao: {accao}")
         agente.avaliacao_estado_atual(1.0)
         return 1.0
 
