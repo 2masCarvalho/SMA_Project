@@ -1,0 +1,29 @@
+{
+    "tipo": "farol",
+    "ambiente": {
+        "dimensao": [
+            20,
+            20
+        ],
+        "pos_farol": [
+            10,
+            10
+        ]
+    },
+    "agentes": [
+        {
+            "posicao": [
+                0,
+                0
+            ],
+            "energia": 100
+        },
+        {
+            "posicao": [
+                19,
+                0
+            ],
+            "energia": 100
+        }
+    ]
+}

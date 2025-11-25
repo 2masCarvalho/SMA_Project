@@ -1,0 +1,23 @@
+{
+    "ambiente": {
+        "tipo": "Grelha2D",
+        "dimensao": [
+            10,
+            10
+        ]
+    },
+    "agentes": [
+        {
+            "tipo": "Explorador",
+            "parametros": {
+                "energia_inicial": 100
+            }
+        },
+        {
+            "tipo": "Guardiao",
+            "parametros": {
+                "energia_inicial": 120
+            }
+        }
+    ]
+}
