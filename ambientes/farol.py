@@ -12,7 +12,7 @@ class AmbienteFarol(Ambiente):
         self.passos_maximos = 100
         self.passos_atuais = 0
         self.terminou_flag = False
-
+ # mudar isto yufdp
     def adicionar_agente(self, agente: Agente):
         """Adiciona um agente ao ambiente em uma posição inicial aleatória (exceto no farol)."""
         while True:
