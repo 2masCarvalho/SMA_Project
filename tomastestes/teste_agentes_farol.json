@@ -1,0 +1,21 @@
+{
+    "tipo": "farol",
+    "agentes": [
+        {
+            "nome": "AgenteFarol1",
+            "posicao": [
+                0,
+                0
+            ],
+            "energia": 100
+        },
+        {
+            "nome": "AgenteFarol2",
+            "posicao": [
+                10,
+                10
+            ],
+            "energia": 80
+        }
+    ]
+}

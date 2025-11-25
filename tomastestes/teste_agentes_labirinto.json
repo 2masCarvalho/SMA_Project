@@ -1,0 +1,21 @@
+{
+    "tipo": "labirinto",
+    "agentes": [
+        {
+            "nome": "Explorador1",
+            "subtipo": "explorador",
+            "posicao": [
+                1,
+                1
+            ]
+        },
+        {
+            "nome": "Inteligente1",
+            "subtipo": "inteligente",
+            "posicao": [
+                5,
+                5
+            ]
+        }
+    ]
+}
