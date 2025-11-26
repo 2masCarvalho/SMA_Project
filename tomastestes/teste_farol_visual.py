@@ -17,13 +17,13 @@ def teste_cenario_farol_visual():
         "tipo": "farol",
         "ambiente": {
             "dimensao": [20, 20],
-            "pos_farol": [18, 18],
+            "pos_farol": [18, 0],
             "obstaculos": [[5, 5], [10, 10], [10, 11], [10, 12], [5, 6], [5, 7]]
         },
         "agentes": [
-            {"nome": "Navegador1", "posicao": [0, 0], "energia": 100},
-            {"nome": "Navegador2", "posicao": [10, 0], "energia": 100},
-            {"nome": "Navegador3", "posicao": [0, 10], "energia": 100}
+            {"nome": "Navegador1", "posicao": [10, 0], "energia": 100},
+            #{"nome": "Navegador2", "posicao": [10, 0], "energia": 100},
+            #{"nome": "Navegador3", "posicao": [0, 10], "energia": 100}
         ]
     }
     
