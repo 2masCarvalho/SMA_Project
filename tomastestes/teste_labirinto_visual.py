@@ -9,25 +9,33 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from Motor import MotorDeSimulacao
 from visualizador import VisualizadorTk
 
-def teste_cenario_farol_visual():
-    print("=== Cenário de Teste Visual: Problema do Farol ===")
+def teste_cenario_labirinto_visual():
+    print("=== Cenário de Teste Visual: Labirinto ===")
     
     # Criar ficheiro JSON de configuração
     config = {
-        "tipo": "farol",
+        "tipo": "labirinto",
         "ambiente": {
             "dimensao": [10, 10],
-            "pos_farol": [8, 8],
-            "obstaculos": [[5, 5], [2, 2]]
+            "paredes": [[1, 1], [1, 2], [2, 1], [3, 3], [3, 4], [4, 3], [5, 5], [5, 6], [6, 5], [7, 7], [7, 8], [8, 7]],
+            "inicio": [0, 0],
+            "saida": [9, 9]
         },
         "agentes": [
-            {"nome": "Navegador1", "posicao": [0, 0], "energia": 100},
-            #{"nome": "Navegador2", "posicao": [10, 0], "energia": 100},
-            #{"nome": "Navegador3", "posicao": [0, 10], "energia": 100}
+            {
+                "nome": "Explorador1", 
+                "subtipo": "explorador", 
+                "posicao": [0, 0]
+            },
+            {
+                "nome": "Inteligente1", 
+                "subtipo": "inteligente", 
+                "posicao": [0, 1]
+            }
         ]
     }
     
-    json_file = "config_farol_visual.json"
+    json_file = "config_labirinto_visual.json"
     with open(json_file, "w") as f:
         json.dump(config, f)
     
@@ -36,23 +44,18 @@ def teste_cenario_farol_visual():
     
     # 2. Inicializar Visualizador
     largura, altura = config["ambiente"]["dimensao"]
-    viz = VisualizadorTk(largura, altura, tamanho_celula=30)
+    viz = VisualizadorTk(largura, altura, tamanho_celula=40)
     
     print("Iniciando simulação com Visualização...")
     
     # Executar X passos
     MAX_PASSOS = 100
-    import tkinter as tk
     try:
         for i in range(MAX_PASSOS):
             motor.executa()
             
             # Atualizar Visualização
-            try:
-                viz.desenhar(motor.ambiente, motor.agentes)
-            except tk.TclError:
-                print("Janela visual fechada.")
-                break
+            viz.desenhar(motor.ambiente, motor.agentes)
             
             time.sleep(0.2) # Pausa para animação
             
@@ -74,4 +77,4 @@ def teste_cenario_farol_visual():
         # viz.root.mainloop() # Se quiséssemos manter aberta
 
 if __name__ == "__main__":
-    teste_cenario_farol_visual()
+    teste_cenario_labirinto_visual()

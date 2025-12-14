@@ -54,6 +54,7 @@ class AmbienteFarol(Ambiente):
             return 0.0
             
         pos_atual = self.agentes_posicoes[agente]
+
         
         # Movimento simples: arredondar a direção para mover na grelha (ou movimento contínuo)
         # Aqui assumimos movimento discreto na grelha para simplificar, ou passos pequenos
@@ -66,10 +67,11 @@ class AmbienteFarol(Ambiente):
         x_int, y_int = int(round(novo_x)), int(round(novo_y))
         
         if not (0 <= x_int < self.largura and 0 <= y_int < self.altura):
-            return -1.0 # Bateu na parede do mundo
+            return -100.0 # Bateu na parede do mundo
             
         if (x_int, y_int) in self.obstaculos:
-            return -0.5 # Bateu num obstáculo
+            return -50.0 # Bateu num obstáculo
+
             
         # Atualizar posição
         self.agentes_posicoes[agente] = (novo_x, novo_y)
@@ -87,3 +89,30 @@ class AmbienteFarol(Ambiente):
         agente.avaliacao_estado_atual(recompensa)
         return recompensa
 
+    def display(self):
+        """Imprime o estado atual do ambiente no terminal."""
+        # Criar grelha vazia
+        grid = [['.' for _ in range(self.largura)] for _ in range(self.altura)]
+        
+        # Colocar Obstáculos
+        for ox, oy in self.obstaculos:
+            if 0 <= ox < self.largura and 0 <= oy < self.altura:
+                grid[oy][ox] = 'O'
+                
+        # Colocar Farol
+        fx, fy = self.farol_pos
+        if 0 <= fx < self.largura and 0 <= fy < self.altura:
+            grid[fy][fx] = 'F'
+            
+        # Colocar Agentes
+        for agente, pos in self.agentes_posicoes.items():
+            ax, ay = int(round(pos[0])), int(round(pos[1]))
+            if 0 <= ax < self.largura and 0 <= ay < self.altura:
+                # Se houver colisão visual, mostra o último
+                grid[ay][ax] = agente.nome[0].upper() 
+                
+        # Imprimir
+        print("+" + "-" * self.largura + "+")
+        for y in range(self.altura):
+            print("|" + "".join(grid[y]) + "|")
+        print("+" + "-" * self.largura + "+")

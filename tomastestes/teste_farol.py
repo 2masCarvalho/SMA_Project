@@ -17,9 +17,9 @@ def teste_cenario_farol():
     # Grelha 20x20, Farol em (18, 18)
     # Obstáculos em (5,5) e (10,10)
     ambiente = AmbienteFarol(
-        farol_pos=(18, 18), 
-        dimensoes=(20, 20),
-        obstaculos=[(5, 5), (10, 10)]
+        farol_pos=(8, 8), 
+        dimensoes=(10, 10),
+        obstaculos=[(5, 5), (2, 2)]
     )
     
     # 2. Configurar Agentes
@@ -49,7 +49,9 @@ def teste_cenario_farol():
         for a in agentes:
             pos = ambiente.agentes_posicoes[a]
             dist = ambiente.observacaoPara(a).dados['distancia']
-            print(f"{a.nome}: Pos={tuple(map(lambda x: round(x, 2), pos))} Dist={dist:.2f}")
+            # print(f"{a.nome}: Pos={tuple(map(lambda x: round(x, 2), pos))} Dist={dist:.2f}")
+        
+        ambiente.display()
             
         time.sleep(0.1) # Pequena pausa para visualização
         

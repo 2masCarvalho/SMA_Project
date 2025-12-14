@@ -1,16 +1,10 @@
 import json
+from typing import List
+from agente import Agente
 from AmbienteFarol import AmbienteFarol
-# Assuming AgenteFarol is AgenteDirecional for now, or we need to import it if it exists separately.
-# Based on previous context, AgenteDirecional is the one used for Farol.
+from AmbienteLabirinto import AmbienteLabirinto
 from agente import AgenteDirecional as AgenteFarol
-# Placeholder for Labirinto classes if they don't exist yet, or import if they do.
-# We will just comment them out or assume they exist if the user asks for Labirinto later.
-# For now, let's import what we have.
 from agente import AgenteExplorador as AgenteLabirinto
-# We need a placeholder for AmbienteLabirinto or import it if it exists.
-# It doesn't exist in tomastestes yet, so we'll define a dummy or import if created.
-# I'll assume AmbienteLabirinto is not yet created in tomastestes, so I will leave it as is but it might fail if called.
-# Actually, let's just fix the Farol part which is requested.
 
 class MotorDeSimulacao:
     def __init__(self, ambiente , agentes):
@@ -34,6 +28,9 @@ class MotorDeSimulacao:
             
         # 3. Update environment
         self.ambiente.atualizacao()
+
+    def listaAgentes(self) -> List[Agente]:
+        return self.agentes
 
     @staticmethod
     def cria(nome_do_ficheiro_parametros: str) -> 'MotorDeSimulacao': 
@@ -64,11 +61,31 @@ class MotorDeSimulacao:
                 agentes.append(agente)
                 
         elif tipo == "labirinto":
-            # Placeholder implementation
-            pass
-            # ambiente = AmbienteLabirinto(params["ambiente"])
-            # for agente_info in params["agentes"]:
-            #     agente = AgenteLabirinto(**agente_info)
-            #     agentes.append(agente) 
+            env_params = params["ambiente"]
+            # Extrair parâmetros do ambiente
+            dimensoes = tuple(env_params.get("dimensao", [10, 10]))
+            paredes = [tuple(p) for p in env_params.get("paredes", [])]
+            saida = tuple(env_params.get("saida", [9, 9]))
+            inicio = tuple(env_params.get("inicio", [0, 0]))
+            
+            ambiente = AmbienteLabirinto(dimensoes, paredes, saida, inicio)
+            
+            for agente_info in params["agentes"]:
+                agente_tipo = agente_info.get("subtipo", "explorador")
+                nome = agente_info.get("nome", "Agente")
+                posicao = tuple(agente_info.get("posicao", inicio))
+                
+                if agente_tipo == "explorador":
+                    agente = AgenteLabirinto(nome, posicao)
+                elif agente_tipo == "inteligente":
+                    # Assumindo que AgenteInteligente tem construtor similar
+                    from agente import AgenteInteligente
+                    agente = AgenteInteligente(nome, posicao)
+                else:
+                    # Default
+                    agente = AgenteLabirinto(nome, posicao)
+                    
+                ambiente.adicionar_agente(agente, posicao)
+                agentes.append(agente)
         
         return MotorDeSimulacao(ambiente, agentes)

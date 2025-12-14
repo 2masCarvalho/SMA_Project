@@ -27,13 +27,23 @@ class VisualizadorTk:
             self.canvas.create_line(0, y, self.largura * self.tamanho_celula, y, fill="#ddd")
             
         # Desenhar Obstáculos
-        for obs in ambiente.obstaculos:
-            x, y = obs
-            self._desenhar_celula(x, y, "gray", "wall")
-            
-        # Desenhar Farol
-        fx, fy = ambiente.farol_pos
-        self._desenhar_celula(fx, fy, "yellow", "F")
+        # Desenhar Obstáculos / Paredes
+        if hasattr(ambiente, 'obstaculos'):
+            for obs in ambiente.obstaculos:
+                x, y = obs
+                self._desenhar_celula(x, y, "gray", "wall")
+        elif hasattr(ambiente, 'paredes'):
+            for parede in ambiente.paredes:
+                x, y = parede
+                self._desenhar_celula(x, y, "black", "")
+
+        # Desenhar Farol / Saída
+        if hasattr(ambiente, 'farol_pos'):
+            fx, fy = ambiente.farol_pos
+            self._desenhar_celula(fx, fy, "yellow", "F")
+        elif hasattr(ambiente, 'saida'):
+            sx, sy = ambiente.saida
+            self._desenhar_celula(sx, sy, "green", "S")
         
         # Desenhar Agentes
         colors = ["red", "blue", "green", "orange", "purple"]

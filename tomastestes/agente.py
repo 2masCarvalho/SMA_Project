@@ -3,6 +3,7 @@ import json
 import threading
 
 from Modelos import Observacao, Accao
+from Sensor import Sensor
 
 class Agente(ABC, threading.Thread):
     """Interface base para todos os agentes."""
@@ -55,7 +56,7 @@ class Agente(ABC, threading.Thread):
         self.recompensa_total += recompensa
         self.passos += 1
 
-    def instala(self, sensor: 'Sensor'): # Tipificação melhorada
+    def instala(self, sensor: Sensor): # Tipificação melhorada
         """Instala um sensor no agente."""
         self.sensores.append(sensor)
 
