@@ -11,6 +11,7 @@ from AgenteRL import AgenteRL
 from Politica import PoliticaQLearning
 from Motor import MotorDeSimulacao
 from visualizador import VisualizadorTk
+from Sensor import SensorDirecao, SensorVisao
 
 def testar_farol_visual_rl():
     print("=== Teste Visual: Problema do Farol (Agente Treinado) ===")
@@ -22,7 +23,7 @@ def testar_farol_visual_rl():
 
     # 1. Configurar Política
     accoes_possiveis = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
-    politica = PoliticaQLearning(accoes_possiveis, epsilon=0.0) 
+    politica = PoliticaQLearning(accoes_possiveis, epsilon=0.1) 
     politica.carregar(Q_TABLE_FILE)
     
     # 2. Configurar Ambiente (10x10 conforme definido anteriormente)
@@ -35,6 +36,11 @@ def testar_farol_visual_rl():
     
     # 3. Configurar Agente
     agente = AgenteRL("AgenteTreinado", politica)
+    # Criar um sensor que sabe calcular a direção
+    sensor_bussola = SensorDirecao()
+    sensor_visão = SensorVisao(raio_visao=1.5)
+    agente.instala(sensor_visão)
+    agente.instala(sensor_bussola)
     ambiente.adicionar_agente(agente, (0, 0))
     
     motor = MotorDeSimulacao(ambiente, [agente])

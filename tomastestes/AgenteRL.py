@@ -14,6 +14,20 @@ class AgenteRL(Agente):
         # Aqui apenas guardamos se necessário, mas o Agente base já guarda self.ultima_observacao
 
     def age(self) -> Accao:
+        # 1. Verificar Sensores Visuais PRIMEIRO (Prioridade ao Reflexo)
+        if self.sensores:
+            # Itera sobre sensores à procura do SensorVisao
+            for sensor in self.sensores:
+                # Nota: Num código ideal, verificaria se é instância de SensorVisao
+                obs = sensor.detetar(self.ambiente, self)
+                
+                if obs.get("farol_visto"):
+                    print(f"[{self.nome}] Contacto visual! A iniciar aproximação final...")
+                    # Retorna imediatamente a ação de ir para o farol
+                    direcao = obs.get("direcao_visual")
+                    return Accao("mover", {"direcao": direcao})
+
+        # 2. Se não viu nada, usa a Memória (Q-Learning)
         if self.ultima_observacao:
             return self.politica.selecionar_accao(self.ultima_observacao)
         return Accao("parar")

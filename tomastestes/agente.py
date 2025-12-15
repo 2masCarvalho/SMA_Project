@@ -32,7 +32,19 @@ class Agente(ABC, threading.Thread):
 
             # Cycle: Observe -> Act
             if self.ambiente:
-                observacao = self.ambiente.observacaoPara(self)
+                # Se houver sensores, usar os sensores para obter a observação
+                if self.sensores:
+                    dados_combinados = {}
+                    for sensor in self.sensores:
+                        # Cada sensor recolhe info 
+                        obs_sensor = sensor.detetar(self.ambiente, self)
+                        #Junta os dados de vários sensores
+                        dados_combinados.update(obs_sensor.dados)
+                        #Sprint("A usar sensor instalado")
+                    observacao= Observacao(dados_combinados)
+                else:
+                    observacao = self.ambiente.observacaoPara(self)
+
                 self.observacao(observacao)
                 accao = self.age()
                 self.ambiente.agir(accao, self)

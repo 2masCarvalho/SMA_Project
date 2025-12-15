@@ -43,12 +43,25 @@ class PoliticaQLearning(Politica):
         self.ultima_recompensa = 0.0
 
     def get_estado_key(self, observacao: Observacao):
-        # Converte a posição (lista ou tupla) para tupla para ser chave de dict
+        # Tenta obter "posicao"
         pos = observacao.get("posicao")
-        return tuple(pos) if pos else None
+        
+        # Se pos for None, retornamos None (causa o seu erro)
+        if pos is None:
+            return None
+            
+        # Garante que é uma tupla para funcionar como chave de dicionário
+        return tuple(pos)
 
     def selecionar_accao(self, observacao: Observacao) -> Accao:
         estado_atual = self.get_estado_key(observacao)
+
+        # --- DEBUG PRINT ---
+        conhecido = estado_atual in self.q_table
+        print(f"Estado: {estado_atual} | Conhecido? {conhecido}")
+        if conhecido:
+            valores = self.q_table[estado_atual]
+            print(f"   -> Valores: {valores}")
         
         # 1. Se tivermos um passo anterior pendente, fazemos o update do Q-Value agora
         # Q(S, A) = Q(S, A) + alpha * (R + gamma * max(Q(S', a')) - Q(S, A))

@@ -23,6 +23,7 @@ class AmbienteFarol(Ambiente):
         Calcula a direção (vetor unitário) para o farol.
         """
         if agente not in self.agentes_posicoes:
+            print("Agente não encontrado no ambiente para observação.")
             return Observacao({})
         
         pos_agente = self.agentes_posicoes[agente]
